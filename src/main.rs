@@ -1,17 +1,21 @@
 use bevy::{prelude::*, window::PrimaryWindow, ui::*};
 use rand::prelude::*;
 
-const CAMERA_MOVE_SPEED: f32 = 10.0;
+const PLAYER_MOVE_SPEED: f32 = 10.0;
 
 // 新しいコンポーネントを定義
 #[derive(Component)]
 struct ConversationUi;
 
+// Playerを識別するためのコンポーネント
+#[derive(Component)]
+struct Player;
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, (setup, setup_conversation_ui))
-        .add_systems(Update, (camera_movement_system, toggle_conversation_ui)) // 新しいシステムを追加
+        .add_systems(Update, (player_and_camera_movement_system, toggle_conversation_ui)) // 新しいシステムを追加
         .run();
 }
 
@@ -21,6 +25,20 @@ fn setup(
 ) {
     // カメラを追加
     commands.spawn(Camera2dBundle::default());
+
+    // Player Entity を追加
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                color: Color::rgb(1.0, 0.0, 0.0), // 赤色の四角形
+                custom_size: Some(Vec2::new(50.0, 50.0)),
+                ..default()
+            },
+            transform: Transform::from_xyz(0.0, 0.0, 0.0),
+            ..default()
+        },
+        Player,
+    ));
 
     let window = window_query.get_single().unwrap();
     let mut rng = rand::thread_rng();
@@ -76,10 +94,14 @@ fn setup_conversation_ui(mut commands: Commands) {
         });
 }
 
-fn camera_movement_system(
+
+
+fn player_and_camera_movement_system(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut camera_query: Query<&mut Transform, With<Camera2d>>,
+    mut player_query: Query<&mut Transform, With<Player>>,
+    mut camera_query: Query<&mut Transform, (With<Camera2d>, Without<Player>)>, // Without<Player> を追加
 ) {
+    let mut player_transform = player_query.single_mut();
     let mut camera_transform = camera_query.single_mut();
 
     let mut direction = Vec3::ZERO;
@@ -98,8 +120,12 @@ fn camera_movement_system(
     }
 
     if direction != Vec3::ZERO {
-        camera_transform.translation += direction.normalize() * CAMERA_MOVE_SPEED;
+        player_transform.translation += direction.normalize() * PLAYER_MOVE_SPEED;
     }
+
+    // カメラをプレイヤーに追従させる
+    camera_transform.translation.x = player_transform.translation.x;
+    camera_transform.translation.y = player_transform.translation.y;
 }
 
 fn toggle_conversation_ui(
