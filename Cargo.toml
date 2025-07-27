@@ -3,6 +3,9 @@ name = "sample_3"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+path = "src/lib.rs"
+
 [dependencies]
 bevy = "0.13"
 rand = "0.8"
