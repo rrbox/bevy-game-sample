@@ -3,11 +3,15 @@ use rand::prelude::*;
 
 const CAMERA_MOVE_SPEED: f32 = 10.0;
 
+// 新しいコンポーネントを定義
+#[derive(Component)]
+struct ConversationUi;
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, (setup, setup_conversation_ui))
-        .add_systems(Update, camera_movement_system)
+        .add_systems(Update, (camera_movement_system, toggle_conversation_ui)) // 新しいシステムを追加
         .run();
 }
 
@@ -44,7 +48,7 @@ fn setup(
 
 fn setup_conversation_ui(mut commands: Commands) {
     commands
-        .spawn(NodeBundle {
+        .spawn((NodeBundle {
             style: Style {
                 width: Val::Percent(100.0),
                 height: Val::Px(150.0), // Height of the conversation UI
@@ -57,7 +61,9 @@ fn setup_conversation_ui(mut commands: Commands) {
             },
             background_color: Color::rgba(0.1, 0.1, 0.1, 0.8).into(), // Dark semi-transparent background
             ..default()
-        })
+        },
+        ConversationUi, // Add the new component
+        ))
         .with_children(|parent| {
             parent.spawn(TextBundle::from_section(
                 "Hello, adventurer! Welcome to the dungeon.",
@@ -93,5 +99,19 @@ fn camera_movement_system(
 
     if direction != Vec3::ZERO {
         camera_transform.translation += direction.normalize() * CAMERA_MOVE_SPEED;
+    }
+}
+
+fn toggle_conversation_ui(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut conversation_ui_query: Query<&mut Visibility, With<ConversationUi>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::Space) {
+        let mut visibility = conversation_ui_query.single_mut();
+        *visibility = match *visibility {
+            Visibility::Visible => Visibility::Hidden,
+            Visibility::Hidden => Visibility::Visible,
+            _ => Visibility::Visible, // Other states like `Inherited` or `Displayed` will become `Visible`
+        };
     }
 }
