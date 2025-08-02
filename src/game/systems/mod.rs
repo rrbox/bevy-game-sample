@@ -1,3 +1,3 @@
 // Systems module
-pub mod combat;
 pub mod collision;
+pub mod combat;

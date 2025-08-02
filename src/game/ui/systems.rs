@@ -1,24 +1,25 @@
 // UI systems
-use bevy::prelude::*;
 use crate::game::ui::components::ConversationUi;
+use bevy::prelude::*;
 
 pub fn setup_conversation_ui(mut commands: Commands) {
     commands
-        .spawn((NodeBundle {
-            style: Style {
-                width: Val::Percent(100.0),
-                height: Val::Px(150.0), // Height of the conversation UI
-                position_type: PositionType::Absolute,
-                bottom: Val::Px(0.0),
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
-                padding: UiRect::all(Val::Px(20.0)),
+        .spawn((
+            NodeBundle {
+                style: Style {
+                    width: Val::Percent(100.0),
+                    height: Val::Px(150.0), // Height of the conversation UI
+                    position_type: PositionType::Absolute,
+                    bottom: Val::Px(0.0),
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    padding: UiRect::all(Val::Px(20.0)),
+                    ..default()
+                },
+                background_color: Color::rgba(0.1, 0.1, 0.1, 0.8).into(), // Dark semi-transparent background
                 ..default()
             },
-            background_color: Color::rgba(0.1, 0.1, 0.1, 0.8).into(), // Dark semi-transparent background
-            ..default()
-        },
-        ConversationUi, // Add the new component
+            ConversationUi, // Add the new component
         ))
         .with_children(|parent| {
             parent.spawn(TextBundle::from_section(

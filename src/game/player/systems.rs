@@ -1,6 +1,6 @@
 // Player systems
-use bevy::prelude::*;
 use crate::game::player::components::Player;
+use bevy::prelude::*;
 
 pub const PLAYER_MOVE_SPEED: f32 = 10.0;
 
@@ -32,9 +32,7 @@ pub fn player_movement_system(
     }
 }
 
-pub fn spawn_player(
-    mut commands: Commands,
-) {
+pub fn spawn_player(mut commands: Commands) {
     commands.spawn((
         SpriteBundle {
             sprite: Sprite {

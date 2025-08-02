@@ -1,7 +1,7 @@
 // World systems
 use bevy::prelude::*;
-use rand::prelude::*;
 use bevy::window::PrimaryWindow;
+use rand::prelude::*;
 
 pub fn spawn_random_squares(
     mut commands: Commands,
@@ -14,10 +14,18 @@ pub fn spawn_random_squares(
     const SQUARE_SIZE: f32 = 50.0;
 
     for _ in 0..NUM_SQUARES {
-        let x = rng.gen_range(-window.width() / 2.0 + SQUARE_SIZE / 2.0..window.width() / 2.0 - SQUARE_SIZE / 2.0);
-        let y = rng.gen_range(-window.height() / 2.0 + SQUARE_SIZE / 2.0..window.height() / 2.0 - SQUARE_SIZE / 2.0);
+        let x = rng.gen_range(
+            -window.width() / 2.0 + SQUARE_SIZE / 2.0..window.width() / 2.0 - SQUARE_SIZE / 2.0,
+        );
+        let y = rng.gen_range(
+            -window.height() / 2.0 + SQUARE_SIZE / 2.0..window.height() / 2.0 - SQUARE_SIZE / 2.0,
+        );
 
-        let color = Color::rgb(rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0));
+        let color = Color::rgb(
+            rng.gen_range(0.0..1.0),
+            rng.gen_range(0.0..1.0),
+            rng.gen_range(0.0..1.0),
+        );
 
         commands.spawn(SpriteBundle {
             sprite: Sprite {
