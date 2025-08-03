@@ -6,6 +6,7 @@ pub fn setup_conversation_ui(mut commands: Commands) {
     commands
         .spawn((
             NodeBundle {
+                visibility: Visibility::Visible,
                 style: Style {
                     width: Val::Percent(100.0),
                     height: Val::Px(150.0), // Height of the conversation UI
