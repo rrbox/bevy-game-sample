@@ -3,15 +3,15 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use rand::prelude::*;
 
+const NUM_SQUARES: u32 = 10;
+const SQUARE_SIZE: f32 = 50.0;
+
 pub fn spawn_random_squares(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
 ) {
     let window = window_query.get_single().unwrap();
     let mut rng = rand::thread_rng();
-
-    const NUM_SQUARES: u32 = 10;
-    const SQUARE_SIZE: f32 = 50.0;
 
     for _ in 0..NUM_SQUARES {
         let x = rng.gen_range(
@@ -42,6 +42,8 @@ pub fn spawn_random_squares(
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub struct CameraFollowSet;
 
+const CAMERA_PLAYER_MAX_DISTANCE: f32 = 100.0;
+
 pub fn camera_follow_player_system(
     mut camera_query: Query<&mut Transform, With<Camera2d>>,
     player_query: Query<&GlobalTransform, With<crate::game::player::components::Player>>,
@@ -49,8 +51,17 @@ pub fn camera_follow_player_system(
     let player_transform = player_query.single();
     let mut camera_transform = camera_query.single_mut();
 
-    camera_transform.translation.x = player_transform.translation().x;
-    camera_transform.translation.y = player_transform.translation().y;
+    let player_2d_pos = player_transform.translation().truncate();
+    let camera_2d_pos = camera_transform.translation.truncate();
+    let distance = player_2d_pos.distance(camera_2d_pos);
+
+    if distance > CAMERA_PLAYER_MAX_DISTANCE {
+        let direction = (player_2d_pos - camera_2d_pos).normalize();
+        let overshoot = distance - CAMERA_PLAYER_MAX_DISTANCE;
+
+        camera_transform.translation.x += direction.x * overshoot;
+        camera_transform.translation.y += direction.y * overshoot;
+    }
 }
 
 pub fn spawn_camera(mut commands: Commands) {

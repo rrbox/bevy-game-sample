@@ -11,7 +11,7 @@ pub struct PlayerMovementSet;
 pub fn player_movement_system(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut player_query: Query<&mut Transform, With<Player>>,
-    time: Res<Time>
+    time: Res<Time>,
 ) {
     let mut player_transform = player_query.single_mut();
     let mut direction = Vec3::ZERO;
@@ -31,7 +31,8 @@ pub fn player_movement_system(
     }
 
     if direction != Vec3::ZERO {
-        player_transform.translation += direction.normalize() * delta_second * PLAYER_MOVE_SPEED * FRAME_PER_SECONDS;
+        player_transform.translation +=
+            direction.normalize() * delta_second * PLAYER_MOVE_SPEED * FRAME_PER_SECONDS;
     }
 }
 
