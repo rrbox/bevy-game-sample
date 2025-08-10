@@ -9,7 +9,11 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, systems::spawn_player).add_systems(
             Update,
-            systems::player_movement_system.in_set(systems::PlayerMovementSet),
+            (
+                systems::player_movement_system,
+                systems::player_movement_speed_system,
+            )
+                .in_set(systems::PlayerMovementSet),
         );
     }
 }

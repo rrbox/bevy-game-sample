@@ -1,28 +1,22 @@
 // Player systems
+use crate::game::common::components::MovementSpeed;
 use crate::game::player::components::Player;
 use bevy::prelude::*;
 
 pub const PLAYER_MOVE_SPEED: f32 = 8.0;
 pub const PLAYER_SPRINT_MOVE_SPEED: f32 = 15.0;
-pub const FRAME_PER_SECONDS: f32 = 60.0;
+pub const PLAYER_SLOW_MOVE_SPEED: f32 = 4.0;
+pub const MAX_FRAME_PER_SECONDS: f32 = 60.0;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub struct PlayerMovementSet;
 
 pub fn player_movement_system(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut player_query: Query<&mut Transform, With<Player>>,
-    time: Res<Time>,
+    mut player_query: Query<(&mut Transform, &MovementSpeed), With<Player>>,
 ) {
-    let mut player_transform = player_query.single_mut();
+    let (mut player_transform, player_speed) = player_query.single_mut();
     let mut direction = Vec3::ZERO;
-    let delta_second = time.delta_seconds();
-    let movement_speed: f32;
-    if keyboard_input.pressed(KeyCode::ShiftLeft) {
-        movement_speed = PLAYER_SPRINT_MOVE_SPEED;
-    } else {
-        movement_speed = PLAYER_MOVE_SPEED;
-    }
 
     if keyboard_input.any_pressed([KeyCode::ArrowLeft, KeyCode::KeyA]) {
         direction += Vec3::new(-1.0, 0.0, 0.0);
@@ -38,9 +32,25 @@ pub fn player_movement_system(
     }
 
     if direction != Vec3::ZERO {
-        player_transform.translation +=
-            direction.normalize() * delta_second * movement_speed * FRAME_PER_SECONDS;
+        player_transform.translation += direction.normalize() * player_speed.speed;
     }
+}
+
+pub fn player_movement_speed_system(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut player_query: Query<&mut MovementSpeed, With<Player>>,
+    time: Res<Time>,
+) {
+    let mut player_speed = player_query.single_mut();
+    let delta_second = time.delta_seconds();
+    let movement_speed = if keyboard_input.pressed(KeyCode::ShiftLeft) {
+        PLAYER_SPRINT_MOVE_SPEED
+    } else if keyboard_input.pressed(KeyCode::ControlLeft) {
+        PLAYER_SLOW_MOVE_SPEED
+    } else {
+        PLAYER_MOVE_SPEED
+    };
+    player_speed.speed = delta_second * movement_speed * MAX_FRAME_PER_SECONDS;
 }
 
 pub fn spawn_player(mut commands: Commands) {
@@ -55,5 +65,6 @@ pub fn spawn_player(mut commands: Commands) {
             ..default()
         },
         Player,
+        MovementSpeed { ..default() },
     ));
 }
