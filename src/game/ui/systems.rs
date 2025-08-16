@@ -1,12 +1,13 @@
 // UI systems
 use crate::game::ui::components::ConversationUi;
+use crate::game::ui::events::StartConversationEvent;
 use bevy::prelude::*;
 
 pub fn setup_conversation_ui(mut commands: Commands) {
     commands
         .spawn((
             NodeBundle {
-                visibility: Visibility::Visible,
+                visibility: Visibility::Hidden,
                 style: Style {
                     width: Val::Percent(100.0),
                     height: Val::Px(150.0), // Height of the conversation UI
@@ -34,16 +35,24 @@ pub fn setup_conversation_ui(mut commands: Commands) {
         });
 }
 
-pub fn toggle_conversation_ui(
+pub fn close_conversation_ui_system(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut conversation_ui_query: Query<&mut Visibility, With<ConversationUi>>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
         let mut visibility = conversation_ui_query.single_mut();
-        *visibility = match *visibility {
-            Visibility::Visible => Visibility::Hidden,
-            Visibility::Hidden => Visibility::Visible,
-            _ => Visibility::Visible, // Other states like `Inherited` or `Displayed` will become `Visible`
-        };
+        if *visibility == Visibility::Visible {
+            *visibility = Visibility::Hidden;
+        }
+    }
+}
+
+pub fn handle_start_conversation_event_system(
+    mut conversation_event_reader: EventReader<StartConversationEvent>,
+    mut conversation_ui_query: Query<&mut Visibility, With<ConversationUi>>,
+) {
+    for _event in conversation_event_reader.read() {
+        let mut visibility = conversation_ui_query.single_mut();
+        *visibility = Visibility::Visible;
     }
 }
