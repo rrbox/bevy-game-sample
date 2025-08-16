@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use sample_3::GamePlugin; // Assuming your crate name is sample_3
+use bevy_game_sample::GamePlugin; // Assuming your crate name is sample_3
 
 fn main() {
     App::new()

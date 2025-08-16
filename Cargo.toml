@@ -1,5 +1,5 @@
 [package]
-name = "sample_3"
+name = "bevy_game_sample"
 version = "0.1.0"
 edition = "2024"
 
