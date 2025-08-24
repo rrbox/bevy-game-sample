@@ -1,7 +1,7 @@
 // Collision systems
 use crate::game::common::components::ConversationTrigger;
 use crate::game::player::components::Player;
-use crate::game::ui::events::StartConversationEvent;
+use crate::game::ui::conversation::events::StartConversationEvent;
 use bevy::math::bounding::Aabb2d;
 use bevy::math::bounding::IntersectsVolume;
 use bevy::prelude::*;
