@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
-enum AppState {
+pub enum AppState {
     #[default]
     Title,
     EditPlayerName,
@@ -10,7 +10,7 @@ enum AppState {
 }
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
-enum GameState {
+pub enum GameState {
     #[default]
     Idle,
     Moving,
@@ -20,7 +20,7 @@ enum GameState {
 }
 
 #[derive(Debug, Clone, Copy, Default, Eq, PartialEq, Hash, States)]
-enum PauseState {
+pub enum PauseState {
     #[default]
     Running,
     Pause,

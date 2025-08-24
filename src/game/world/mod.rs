@@ -1,3 +1,4 @@
+use crate::game::states::{AppState, PauseState};
 use bevy::prelude::*;
 
 pub mod camera;
@@ -8,7 +9,13 @@ pub struct WorldPlugin;
 
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
+        app.configure_sets(
+            Update,
+            camera::systems::CameraFollowSet
+                .run_if(in_state(AppState::InGame))
+                .run_if(in_state(PauseState::Running)), // <-- この行を追加
+        )
+        .add_systems(
             Startup,
             (
                 setup_systems::spawn_random_squares,

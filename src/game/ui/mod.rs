@@ -1,3 +1,4 @@
+use crate::game::states::AppState;
 use bevy::prelude::*;
 
 pub mod components;
@@ -14,7 +15,9 @@ impl Plugin for UiPlugin {
                 (
                     systems::close_conversation_ui_system,
                     systems::handle_start_conversation_event_system,
-                ),
+                    systems::toggle_pause_system, // <-- この行を追加
+                )
+                    .run_if(in_state(AppState::InGame)),
             );
     }
 }

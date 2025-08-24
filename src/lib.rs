@@ -1,3 +1,4 @@
+use crate::game::states::{AppState, GameState, PauseState};
 use crate::game::systems::CollisionPlugin;
 use bevy::prelude::*;
 
@@ -7,7 +8,10 @@ pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<game::ui::events::StartConversationEvent>()
+        app.init_state::<AppState>()
+            .init_state::<GameState>()
+            .init_state::<PauseState>()
+            .add_event::<game::ui::events::StartConversationEvent>()
             .add_plugins(game::player::PlayerPlugin)
             .add_plugins(game::ui::UiPlugin)
             .add_plugins(game::world::WorldPlugin)

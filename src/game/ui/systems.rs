@@ -1,4 +1,5 @@
 // UI systems
+use crate::game::states::PauseState;
 use crate::game::ui::components::ConversationUi;
 use crate::game::ui::events::StartConversationEvent;
 use bevy::prelude::*;
@@ -54,5 +55,19 @@ pub fn handle_start_conversation_event_system(
     for _event in conversation_event_reader.read() {
         let mut visibility = conversation_ui_query.single_mut();
         *visibility = Visibility::Visible;
+    }
+}
+
+pub fn toggle_pause_system(
+    mut next_pause_state: ResMut<NextState<PauseState>>,
+    pause_state: Res<State<PauseState>>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::Escape) {
+        let next_state = match pause_state.get() {
+            PauseState::Running => PauseState::Pause,
+            PauseState::Pause => PauseState::Running,
+        };
+        next_pause_state.set(next_state);
     }
 }
