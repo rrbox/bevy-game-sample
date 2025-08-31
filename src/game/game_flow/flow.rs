@@ -14,18 +14,21 @@ pub enum FlowStep {
     Movie { movie_key: MovieKey },
 }
 
-#[derive(Resource, Debug, Clone, PartialEq, Eq, Hash)]
-pub struct CurrentStep(u32);
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct StepID(pub u32);
 
-impl From<u32> for CurrentStep {
-    fn from(step: u32) -> Self {
-        Self(step)
+impl From<u32> for StepID {
+    fn from(id: u32) -> Self {
+        Self(id)
     }
 }
 
 #[derive(Resource)]
+pub struct CurrentStep(pub StepID);
+
+#[derive(Resource)]
 pub struct GameFlow {
-    flow: HashMap<CurrentStep, FlowStep>,
+    flow: HashMap<StepID, FlowStep>,
 }
 
 impl GameFlow {
