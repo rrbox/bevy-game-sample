@@ -1,4 +1,4 @@
-use crate::game::states::{AppState, PauseState};
+use crate::game::states::{AppState, GameState, PauseState};
 use bevy::prelude::*;
 
 pub mod components;
@@ -12,7 +12,8 @@ impl Plugin for PlayerPlugin {
             Update,
             systems::PlayerMovementSet
                 .run_if(in_state(AppState::InGame))
-                .run_if(in_state(PauseState::Running)), // <-- この行を追加
+                .run_if(in_state(GameState::Moving))
+                .run_if(in_state(PauseState::Running)),
         )
         .add_systems(Startup, systems::spawn_player)
         .add_systems(

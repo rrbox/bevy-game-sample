@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use bevy_game_sample::game::dev_tools::DevToolsPlugin;
 use bevy_game_sample::GamePlugin;
+use bevy_game_sample::game::dev_tools::DevToolsPlugin;
 
 fn main() {
     let mut app = App::new();

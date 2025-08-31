@@ -16,10 +16,12 @@ pub fn spawn_random_squares(
 
     for _ in 0..NUM_SQUARES {
         let x = rng.gen_range(
-            -window.width() / 2.0 + SQUARE_SIZE / 2.0..(window.width()*10.0) / 2.0 - SQUARE_SIZE / 2.0,
+            -window.width() / 2.0 + SQUARE_SIZE / 2.0
+                ..(window.width() * 10.0) / 2.0 - SQUARE_SIZE / 2.0,
         );
         let y = rng.gen_range(
-            -window.height() / 2.0 + SQUARE_SIZE / 2.0..(window.height()*10.0) / 2.0 - SQUARE_SIZE / 2.0,
+            -window.height() / 2.0 + SQUARE_SIZE / 2.0
+                ..(window.height() * 10.0) / 2.0 - SQUARE_SIZE / 2.0,
         );
 
         let color = Color::rgb(134.0 / 255.0, 74.0 / 255.0, 43.0 / 255.0);

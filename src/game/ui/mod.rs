@@ -7,9 +7,6 @@ pub struct UiPlugin;
 
 impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((
-            conversation::ConversationUiPlugin,
-            pause::PauseUiPlugin,
-        ));
+        app.add_plugins((conversation::ConversationUiPlugin, pause::PauseUiPlugin));
     }
 }
