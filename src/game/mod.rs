@@ -1,5 +1,5 @@
-// Game module definition
 pub mod common;
+pub mod databases;
 pub mod dev_tools;
 pub mod enemy;
 pub mod player;
