@@ -11,6 +11,8 @@ impl Plugin for GamePlugin {
         app.init_state::<AppState>()
             .init_state::<GameState>()
             .init_state::<PauseState>()
+            .add_plugins(game::databases::DatabasePlugin)
+            .add_plugins(game::game_flow::GameFlowPlugin)
             .add_event::<game::ui::conversation::events::StartConversationEvent>()
             .add_plugins(game::player::PlayerPlugin)
             .add_plugins(game::ui::UiPlugin)
