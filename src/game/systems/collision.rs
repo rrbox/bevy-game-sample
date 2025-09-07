@@ -1,7 +1,8 @@
 // Collision systems
 use crate::game::common::components::ConversationTrigger;
+use crate::game::game_flow::flow::CurrentStep;
 use crate::game::player::components::Player;
-use crate::game::ui::conversation::events::StartConversationEvent;
+use crate::game::states::GameState;
 use bevy::math::bounding::Aabb2d;
 use bevy::math::bounding::IntersectsVolume;
 use bevy::prelude::*;
@@ -9,7 +10,8 @@ use bevy::prelude::*;
 pub fn check_conversation_trigger_system(
     player_query: Query<(&Transform, &Sprite), With<Player>>,
     mut trigger_query: Query<(&Transform, &mut ConversationTrigger)>,
-    mut conversation_event_writer: EventWriter<StartConversationEvent>,
+    mut next_state: ResMut<NextState<GameState>>,
+    mut current_step: ResMut<CurrentStep>,
 ) {
     if let Ok((player_transform, player_sprite)) = player_query.get_single() {
         let player_size = player_sprite.custom_size.unwrap_or(Vec2::ONE);
@@ -21,7 +23,8 @@ pub fn check_conversation_trigger_system(
 
             if player_aabb.intersects(&trigger_aabb) {
                 if !trigger.is_contact {
-                    conversation_event_writer.send(StartConversationEvent);
+                    next_state.set(GameState::Idle);
+                    current_step.0 = 1.into();
                     trigger.is_contact = true;
                 }
             } else {

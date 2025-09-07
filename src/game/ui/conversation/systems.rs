@@ -1,3 +1,5 @@
+use crate::game::game_flow::flow::CurrentStep;
+use crate::game::states::GameState;
 use crate::game::ui::conversation::components::ConversationUi;
 use crate::game::ui::conversation::events::StartConversationEvent;
 use bevy::prelude::*;
@@ -37,9 +39,14 @@ pub fn setup_conversation_ui(mut commands: Commands) {
 pub fn close_conversation_ui_system(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut conversation_ui_query: Query<&mut Visibility, With<ConversationUi>>,
+    mut next_state: ResMut<NextState<GameState>>,
+    mut current_step: ResMut<CurrentStep>,
 ) {
     if keyboard_input.just_pressed(KeyCode::Space) {
         let mut visibility = conversation_ui_query.single_mut();
+        // TODO: conversation 情報から会話を終了するのか、次の会話に進むのか分岐する
+        next_state.set(GameState::Idle);
+        current_step.0 = 0.into();
         if *visibility == Visibility::Visible {
             *visibility = Visibility::Hidden;
         }

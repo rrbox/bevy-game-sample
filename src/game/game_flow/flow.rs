@@ -48,4 +48,8 @@ impl GameFlow {
         );
         Self { flow: flow }
     }
+
+    pub fn get_step(&self, step_id: &StepID) -> Option<&FlowStep> {
+        self.flow.get(step_id)
+    }
 }

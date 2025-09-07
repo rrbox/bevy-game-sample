@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::game::states::{GameState, PauseState};
+
 pub mod components;
 pub mod events;
 pub mod systems;
@@ -14,7 +16,9 @@ impl Plugin for ConversationUiPlugin {
                 (
                     systems::close_conversation_ui_system,
                     systems::handle_start_conversation_event_system,
-                ),
+                )
+                    .run_if(in_state(GameState::Conversation))
+                    .run_if(in_state(PauseState::Running)),
             );
     }
 }
