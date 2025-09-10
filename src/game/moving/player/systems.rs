@@ -1,5 +1,5 @@
 // Player systems
-use crate::game::common::components::MovementSpeed;
+use crate::game::moving::components::MovementSpeed;
 use crate::game::moving::player::components::Player;
 use bevy::prelude::*;
 

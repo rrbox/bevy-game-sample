@@ -1,5 +1,5 @@
 // World systems
-use crate::game::common::components::ConversationTrigger;
+use crate::game::moving::components::ConversationTrigger;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use rand::prelude::*;
