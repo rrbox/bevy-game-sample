@@ -7,7 +7,7 @@ const CAMERA_PLAYER_MAX_DISTANCE: f32 = 100.0;
 
 pub fn camera_follow_player_system(
     mut camera_query: Query<&mut Transform, With<Camera2d>>,
-    player_query: Query<&GlobalTransform, With<crate::game::player::components::Player>>,
+    player_query: Query<&GlobalTransform, With<crate::game::moving::player::components::Player>>,
 ) {
     let player_transform = player_query.single();
     let mut camera_transform = camera_query.single_mut();

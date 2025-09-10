@@ -1,6 +1,6 @@
 // Player systems
 use crate::game::common::components::MovementSpeed;
-use crate::game::player::components::Player;
+use crate::game::moving::player::components::Player;
 use bevy::prelude::*;
 
 pub const PLAYER_MOVE_SPEED: f32 = 8.0;
