@@ -1,3 +1,4 @@
+use crate::game::conversation::ConversationPlugin;
 use crate::game::states::StatePlugin;
 use crate::game::systems::CollisionPlugin;
 use bevy::prelude::*;
@@ -15,6 +16,7 @@ impl Plugin for GamePlugin {
             .add_plugins(game::ui::UiPlugin)
             .add_plugins(game::world::WorldPlugin)
             .add_plugins(CollisionPlugin)
+            .add_plugins(ConversationPlugin)
             .configure_sets(
                 Update,
                 game::moving::player::systems::PlayerMovementSet

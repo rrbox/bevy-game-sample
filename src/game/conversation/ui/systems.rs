@@ -1,7 +1,7 @@
 use crate::game::game_flow::flow::CurrentStep;
 use crate::game::states::GameState;
-use crate::game::ui::conversation::components::ConversationUi;
-use crate::game::ui::conversation::events::StartConversationEvent;
+use crate::game::conversation::ui::components::ConversationUi;
+use crate::game::conversation::ui::events::StartConversationEvent;
 use bevy::prelude::*;
 
 pub fn setup_conversation_ui(mut commands: Commands) {
