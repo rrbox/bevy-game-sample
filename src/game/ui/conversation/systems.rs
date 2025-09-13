@@ -62,3 +62,9 @@ pub fn handle_start_conversation_event_system(
         *visibility = Visibility::Visible;
     }
 }
+
+pub fn send_start_conversation_event_on_enter(
+    mut conversation_event_writer: EventWriter<StartConversationEvent>,
+) {
+    conversation_event_writer.send(StartConversationEvent);
+}

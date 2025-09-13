@@ -8,7 +8,6 @@ use crate::game::{
     },
     game_flow::flow::{CurrentStep, GameFlow},
     states::GameState,
-    ui::conversation::events::StartConversationEvent,
 };
 
 pub fn advance_game_state(
@@ -19,7 +18,6 @@ pub fn advance_game_state(
     battle_db: Res<BattleDataBase>,
     movie_db: Res<MovieDataBase>,
     mut next_state: ResMut<NextState<GameState>>,
-    mut conversation_event_writer: EventWriter<StartConversationEvent>,
 ) {
     // flow resource から current flow step を取り出す
     // current flow step をパターンマッチングする
@@ -28,7 +26,6 @@ pub fn advance_game_state(
         match current_flow_step {
             crate::game::game_flow::flow::FlowStep::Conversation { conversation_key } => {
                 next_state.set(GameState::Conversation);
-                conversation_event_writer.send(StartConversationEvent);
             }
             crate::game::game_flow::flow::FlowStep::Moving { moving_key } => {
                 next_state.set(GameState::Moving);

@@ -10,7 +10,8 @@ pub struct ConversationUiPlugin;
 
 impl Plugin for ConversationUiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, systems::setup_conversation_ui)
+        app.add_event::<events::StartConversationEvent>()
+            .add_systems(Startup, systems::setup_conversation_ui)
             .add_systems(
                 Update,
                 (
@@ -19,6 +20,10 @@ impl Plugin for ConversationUiPlugin {
                 )
                     .run_if(in_state(GameState::Conversation))
                     .run_if(in_state(PauseState::Running)),
+            )
+            .add_systems(
+                OnEnter(GameState::Conversation),
+                systems::send_start_conversation_event_on_enter,
             );
     }
 }
