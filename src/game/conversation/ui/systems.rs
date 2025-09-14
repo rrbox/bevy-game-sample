@@ -1,7 +1,7 @@
-use crate::game::game_flow::flow::CurrentStep;
-use crate::game::states::GameState;
 use crate::game::conversation::ui::components::ConversationUi;
-use crate::game::conversation::ui::events::StartConversationEvent;
+use crate::game::game_flow::flow::CurrentStep;
+use crate::game::shared::domain_models::conversation::start_conversation::StartConversationEvent;
+use crate::game::states::GameState;
 use bevy::prelude::*;
 
 pub fn setup_conversation_ui(mut commands: Commands) {
@@ -61,10 +61,4 @@ pub fn handle_start_conversation_event_system(
         let mut visibility = conversation_ui_query.single_mut();
         *visibility = Visibility::Visible;
     }
-}
-
-pub fn send_start_conversation_event_on_enter(
-    mut conversation_event_writer: EventWriter<StartConversationEvent>,
-) {
-    conversation_event_writer.send(StartConversationEvent);
 }

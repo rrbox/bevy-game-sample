@@ -1,6 +1,6 @@
 // Collision systems
-use crate::game::moving::components::ConversationTrigger;
 use crate::game::game_flow::flow::CurrentStep;
+use crate::game::moving::components::ConversationTrigger;
 use crate::game::moving::player::components::Player;
 use crate::game::states::GameState;
 use bevy::math::bounding::Aabb2d;

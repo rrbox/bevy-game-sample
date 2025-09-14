@@ -2,18 +2,18 @@ use bevy::prelude::*;
 
 use crate::game::{
     databases::{
-        battle::battle_database::BattleDataBase,
-        conversation::conversation_database::ConversationDataBase,
-        movie::movie_database::MovieDataBase, moving::moving_database::MovingDataBase,
+        battle::battle_database::BattleDataBase, movie::movie_database::MovieDataBase,
+        moving::moving_database::MovingDataBase,
     },
     game_flow::flow::{CurrentStep, GameFlow},
+    shared::domain_models::conversation::start_conversation::StartConversationEvent,
     states::GameState,
 };
 
 pub fn advance_game_state(
     flow: Res<GameFlow>,
     current_step: Res<CurrentStep>,
-    conversation_db: Res<ConversationDataBase>,
+    mut conversation_event: EventWriter<StartConversationEvent>,
     moving_db: Res<MovingDataBase>,
     battle_db: Res<BattleDataBase>,
     movie_db: Res<MovieDataBase>,
@@ -24,8 +24,9 @@ pub fn advance_game_state(
     // 分岐先で next_state を更新する
     if let Some(current_flow_step) = flow.get_step(&current_step.0) {
         match current_flow_step {
-            crate::game::game_flow::flow::FlowStep::Conversation { conversation_key } => {
+            crate::game::game_flow::flow::FlowStep::Conversation { scenario_id } => {
                 next_state.set(GameState::Conversation);
+                conversation_event.send(StartConversationEvent(scenario_id.clone()));
             }
             crate::game::game_flow::flow::FlowStep::Moving { moving_key } => {
                 next_state.set(GameState::Moving);

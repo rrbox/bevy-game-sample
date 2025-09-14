@@ -1,16 +1,18 @@
 use bevy::prelude::*;
 
-use crate::game::states::{GameState, PauseState};
+use crate::game::{
+    shared::domain_models::conversation::start_conversation::StartConversationEvent,
+    states::{GameState, PauseState},
+};
 
 pub mod components;
-pub mod events;
 pub mod systems;
 
 pub struct ConversationUiPlugin;
 
 impl Plugin for ConversationUiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<events::StartConversationEvent>()
+        app.add_event::<StartConversationEvent>()
             .add_systems(Startup, systems::setup_conversation_ui)
             .add_systems(
                 Update,
@@ -20,10 +22,6 @@ impl Plugin for ConversationUiPlugin {
                 )
                     .run_if(in_state(GameState::Conversation))
                     .run_if(in_state(PauseState::Running)),
-            )
-            .add_systems(
-                OnEnter(GameState::Conversation),
-                systems::send_start_conversation_event_on_enter,
             );
     }
 }

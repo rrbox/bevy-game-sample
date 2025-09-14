@@ -1,14 +1,16 @@
 use bevy::prelude::*;
 
-use crate::game::databases::{
-    battle::battle_key::BattleKey, conversation::conversation_key::ConversationKey,
-    movie::movie_key::MovieKey, moving::moving_key::MovingKey,
+use crate::game::{
+    databases::{
+        battle::battle_key::BattleKey, movie::movie_key::MovieKey, moving::moving_key::MovingKey,
+    },
+    shared::domain_models::conversation::scenario_ids::{ScenarioID, ScenarioIDs},
 };
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub enum FlowStep {
-    Conversation { conversation_key: ConversationKey },
+    Conversation { scenario_id: ScenarioID },
     Moving { moving_key: MovingKey },
     Battle { battle_key: BattleKey },
     Movie { movie_key: MovieKey },
@@ -43,7 +45,7 @@ impl GameFlow {
         flow.insert(
             1.into(),
             FlowStep::Conversation {
-                conversation_key: "".into(),
+                scenario_id: ScenarioIDs::start(),
             },
         );
         Self { flow: flow }
