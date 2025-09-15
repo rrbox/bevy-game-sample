@@ -2,7 +2,12 @@ use bevy::app::Plugin;
 
 use crate::game::{
     conversation::{
-        self, conversation_data::create_conversation, domain_models::{Flow, Passage, PassageID, Scenario}, events::DisplayPassageEvent, static_resources::Conversation, ui::ConversationUiPlugin
+        self,
+        conversation_data::create_conversation,
+        domain_models::{Flow, Passage, PassageID, Scenario},
+        events::DisplayPassageEvent,
+        static_resources::Conversation,
+        ui::ConversationUiPlugin,
     },
     shared::domain_models::conversation::{
         scenario_ids::ScenarioIDs, start_conversation::StartConversationEvent,

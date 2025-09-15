@@ -46,7 +46,8 @@ pub fn setup_conversation_ui(mut commands: Commands, asset_server: Res<AssetServ
                 TextBundle::from_section(
                     "",
                     TextStyle {
-                        font: asset_server.load("fonts/DotGothic16-Regular/DotGothic16-Regular.ttf"),
+                        font: asset_server
+                            .load("fonts/DotGothic16-Regular/DotGothic16-Regular.ttf"),
                         font_size: 50.0,
                         color: Color::WHITE,
                         ..default()
