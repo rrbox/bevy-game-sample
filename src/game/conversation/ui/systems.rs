@@ -9,7 +9,7 @@ use crate::game::shared::domain_models::conversation::start_conversation::StartC
 use crate::game::states::GameState;
 use bevy::prelude::*;
 
-pub fn setup_conversation_ui(mut commands: Commands) {
+pub fn setup_conversation_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn((
             NodeBundle {
@@ -46,7 +46,8 @@ pub fn setup_conversation_ui(mut commands: Commands) {
                 TextBundle::from_section(
                     "",
                     TextStyle {
-                        font_size: 30.0,
+                        font: asset_server.load("fonts/DotGothic16-Regular/DotGothic16-Regular.ttf"),
+                        font_size: 50.0,
                         color: Color::WHITE,
                         ..default()
                     },
@@ -117,8 +118,20 @@ pub fn handle_start_conversation_event_system(
 
 pub fn display_passage_system(
     mut display_passage_event_reader: EventReader<DisplayPassageEvent>,
-    mut teller_text_query: Query<&mut Text, (With<ConversationTellerText>, Without<ConversationPassageText>)>, 
-    mut passage_text_query: Query<&mut Text, (With<ConversationPassageText>, Without<ConversationTellerText>)>,
+    mut teller_text_query: Query<
+        &mut Text,
+        (
+            With<ConversationTellerText>,
+            Without<ConversationPassageText>,
+        ),
+    >,
+    mut passage_text_query: Query<
+        &mut Text,
+        (
+            With<ConversationPassageText>,
+            Without<ConversationTellerText>,
+        ),
+    >,
 ) {
     for event in display_passage_event_reader.read() {
         let passage = &event.0;

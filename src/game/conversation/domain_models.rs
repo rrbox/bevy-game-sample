@@ -42,15 +42,9 @@ impl Passage {
 
 #[derive(Debug, Clone)]
 pub enum Flow {
-    Branch {
-        decisions: Box<[Decision]>,
-    },
-    Linear {
-        next: PassageID,
-    },
-    End {
-        next_step: StepID,
-    },
+    Branch { decisions: Box<[Decision]> },
+    Linear { next: PassageID },
+    End { next_step: StepID },
 }
 
 impl Flow {
@@ -86,12 +80,6 @@ impl Decision {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct PassageID(u64);
-
-impl PassageID {
-    pub const fn new(value: u64) -> Self {
-        PassageID(value)
-    }
-}
 
 impl From<u64> for PassageID {
     fn from(value: u64) -> Self {

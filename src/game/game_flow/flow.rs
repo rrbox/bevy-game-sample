@@ -45,7 +45,7 @@ impl GameFlow {
         flow.insert(
             1.into(),
             FlowStep::Conversation {
-                scenario_id: ScenarioIDs::start(),
+                scenario_id: ScenarioIDs::section1_start(),
             },
         );
         Self { flow: flow }

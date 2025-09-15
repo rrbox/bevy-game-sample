@@ -20,7 +20,7 @@ impl Deref for ScenarioID {
 pub(crate) struct ScenarioIDs;
 
 impl ScenarioIDs {
-    pub(crate) fn start() -> ScenarioID {
-        ScenarioID::new("start")
+    pub(crate) fn section1_start() -> ScenarioID {
+        ScenarioID::new("section1_start")
     }
 }

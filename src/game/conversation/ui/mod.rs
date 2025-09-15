@@ -1,8 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::{
-    states::{GameState, PauseState},
-};
+use crate::game::states::{GameState, PauseState};
 
 pub mod components;
 pub mod systems;

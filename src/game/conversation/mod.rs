@@ -2,17 +2,14 @@ use bevy::app::Plugin;
 
 use crate::game::{
     conversation::{
-        domain_models::{Flow, Passage, PassageID, Scenario},
-        events::DisplayPassageEvent,
-        static_resources::Conversation,
-        ui::ConversationUiPlugin,
+        self, conversation_data::create_conversation, domain_models::{Flow, Passage, PassageID, Scenario}, events::DisplayPassageEvent, static_resources::Conversation, ui::ConversationUiPlugin
     },
-    shared::domain_models::{
-        conversation::scenario_ids::ScenarioIDs,
-        conversation::start_conversation::StartConversationEvent,
+    shared::domain_models::conversation::{
+        scenario_ids::ScenarioIDs, start_conversation::StartConversationEvent,
     },
 };
 
+mod conversation_data;
 mod domain_models;
 pub mod events;
 mod static_resources;
@@ -24,26 +21,7 @@ impl Plugin for ConversationPlugin {
     fn build(&self, app: &mut bevy::app::App) {
         app.add_event::<StartConversationEvent>()
             .add_event::<DisplayPassageEvent>()
-            .insert_resource(Conversation::new(vec![(
-                ScenarioIDs::start(),
-                Scenario::new(
-                    PassageID::new(0),
-                    vec![
-                        (
-                            PassageID::new(0),
-                            Passage::new("NPC_A", "Hello, adventurer.", Flow::linear(1.into())),
-                        ),
-                        (
-                            PassageID::new(1),
-                            Passage::new(
-                                "NPC_A",
-                                "This dungeon is dangerous. Be careful.",
-                                Flow::end(0.into()),
-                            ),
-                        ),
-                    ],
-                ),
-            )]))
+            .insert_resource(create_conversation())
             .add_plugins(ConversationUiPlugin);
     }
 }
